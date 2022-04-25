@@ -1,11 +1,10 @@
-
-# -*- coding : UTF-8 -*-
+# -*- coding=utf-8 -*-
 
 __version__ = "0.0.4"
 
 __doc__ = \
 """
-// script by MineClever
+// script by MineClever @ LLStudio for project ZHJ
 // This Script was designed to translate Engine Camera into AfterEffect Camera in purpose
 
 // first is target, second is reference source ,others are attachments
@@ -26,9 +25,9 @@ __doc__ = \
 ... ... ... ... ... ... ... ... ,,----~~”'¯¯¯¯¯¯”'~~
 ... ... ... ... ... ...,,-~”¯::::::::::::::::::::::::::::::::::¯”'~
 ... ... ... ... ..,,~”::::::::::::::::::::::::::::::::::::::::::::::::::::”~
-... ... ... ..,,-“:::::::::::::::/::::::/::::::::::::::::\::::::::::::\:::::::::\ 
-... ... ...,-“:::::,-“:::/:::::/::::::/:|::::::::::::::::\::::::::::::\:::::::::\ 
-... ... .,-“:::::::/:::::|:::::|:::::::|:|:::::::|:::::::\\:::::::::::|:|:::::\::\ 
+... ... ... ..,,-“:::::::::::::::/::::::/::::::::::::::::\::::::::::::\:::::::::\
+... ... ...,-“:::::,-“:::/:::::/::::::/:|::::::::::::::::\::::::::::::\:::::::::\
+... ... .,-“:::::::/:::::|:::::|:::::::|:|:::::::|:::::::\\:::::::::::|:|:::::\::\
 ... ... /::::::/:::|::::::|:::::|::|::::\:\:::::/\::::/:::||:::::::::|:/::::::|:::|
 ... .../::::::|:::::\::::::\::::\::\::::/\:\,::/::\::/::::|:|:::::::/\/::::::/::::|
 ... ../::::::/::::::'\::::::\-,:::\/\::/: :\-,”/ : :\/:\:::/: |:::::/::/::::::|::::/
@@ -36,8 +35,8 @@ __doc__ = \
 ... /::::::/::/:::::::|::/,__/:/: :__/ . .: : : : : : :\__. \/: \:::::/::/:::/
 ... |:::|::::::::::::/::/::::/;/ ;/ ,. .,\: : : : : : : / ,._., \ /::::::|::/:|
 ...|:::/:::/::::::::/::/|:::|.\: |.|❤||; : : : : : :|.|.❤||;|::|:::\/:/::/
-...|::|:::|::::::::/:::\|:::'\,|: \."'" /: : : : : : : :'\." '"/ : \: |:::|::\ 
-...|::|:::|:::::::/:::::|::::|/: : “¯': : : : : : : : : :"¯'' : : :\ : :/::::'\ 
+...|::|:::|::::::::/:::\|:::'\,|: \."'" /: : : : : : : :'\." '"/ : \: |:::|::\
+...|::|:::|:::::::/:::::|::::|/: : “¯': : : : : : : : : :"¯'' : : :\ : :/::::'\
 ...|::|:::|::::::/:::::/:::::'\: : : : : : : : : : : : : : :': : : : :| :/::::::|
 ... \:|:::|:::::|::::::|::::::|,: : : : : : :~,___,~: : : : : :,-“:::::::|::|
 ... .'\|::|:::::|::::::||::::::\'~,: : : : : : '~--~': : : : ,,~”\:::::::::|:/
@@ -46,7 +45,7 @@ __doc__ = \
 ... ... ..',\,::|~--'-~\:::::::|: : : : : : |::|,,-~”¯___\::::::::\... .'|
 ... ..,~”': : \|: : : : : \::::::|: : : : : : |¯”'~~”~,”,: : \:::::::|... /
 ..,-“: : : : : :|: : : : : :\::::::|: : : : : : \: : : : : : “~'-,:\::::::|\,/
-..|: : : : : : : |: : : : : : |::::|,\,: : : : : : : : : : : : : :”-,-\::::|: \ 
+..|: : : : : : : |: : : : : : |::::|,\,: : : : : : : : : : : : : :”-,-\::::|: \
 ..| : : : : : : : : : : : : : |::::|:'-,\: : : : : : : : : : : : : : :”-'\,|: :|
 ...\ : : : : : : : : : :'\: : :\:::|: : '\'\: : : : :~,,: : : : : : : : : “~-
 ...| : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : : :”-'\,,
@@ -79,9 +78,9 @@ __doc__ = \
 ... ... .../-,-,”,,-,~-,,_: : : : : : : : : : : : : : : : : “-,: : : : : :'\: : /
 ... ... ..|',/,/:||:\,\: : ::: ""~,,~~---,,,_: : : : : : : : : :'\: : : : : ,:\ :
 ... ... ..|: :”: ||: :”: : : : : : :”-,........ ¯¯”''~~~-----~|\: : : : : : \ : '
-... ... ..|: : : ||: : : : : : : : : : :”-,..........................|: : : : : : :\ 
-... ... ..| : : : : : : : : : : : : : : : :”-,.......................\: : : : : : : :\ 
-... ... ..| : : : : : : : : : : : : : : : :”-,\....................,-“\: : : : : : : :':\ 
+... ... ..|: : : ||: : : : : : : : : : :”-,..........................|: : : : : : :\
+... ... ..| : : : : : : : : : : : : : : : :”-,.......................\: : : : : : : :\
+... ... ..| : : : : : : : : : : : : : : : :”-,\....................,-“\: : : : : : : :':\
 ... ... ..| : : : : : : : : : : : : : : : : : :”-\...............,/: : :\:
 
 """
@@ -98,13 +97,13 @@ class MayaMatrixTools (object):
     """
         the first in sel_list is [target];
         the second in sel_list is [reference];
-        
+
         setSelectList(list) : set current process list;
         ret matrix makeEmptyGPMatrix(void) : get the origin point matrix of current workspace
         ret matrix getWorldMatrix(string) : get a world matrix by name;
         ret matrix getInvWorldMatrix(string) : get a Inverse world matrix by name;
     """
-    
+
     def __init__ (self):
         self.empty_matrix = self.makeEmptyGPMatrix()
         self.sel_list = []
@@ -113,27 +112,27 @@ class MayaMatrixTools (object):
     def setSelectList(self, input_list):
         self.sel_list = input_list
         self.length_of_sel_list = len(self.sel_list)
-        
+
     def getWorldMatrix (self, name):
         matrix = api.MMatrix(cmds.getAttr("{}.worldMatrix".format(name)))
         return matrix
-    
+
     def getInvWorldMatrix (self, name):
         matrix = api.MMatrix(cmds.getAttr("{}.worldInverseMatrix".format(name)))
         return matrix
-    
+
     def computeOffsetMatrix(self):
         warning = u"Select 2 objects or more\n"
         if self.length_of_sel_list < 2 : sys.stderr.write(warning); raise (Exception(warning))
         matrix_product = self.getInvWorldMatrix(self.sel_list[1]) * self.getWorldMatrix(self.sel_list[0])
         return matrix_product
-    
+
     def transOffsetMethod(self):
         """virtual method"""
         raise (NotImplementedError(u"You need an implementation of {}".format(sys._getframe().f_code.co_name)))
-    
+
     def makeEmptyGPMatrix(self):
-        # make a empty origin transform node, to get the matrix of current software origin 
+        # make a empty origin transform node, to get the matrix of current software origin
         # empty_group = cmds.group( empty=True, world=True, name="EMPETY_ORIGIN_POINT_01" )
         # empty_matrix = self.getWorldMatrix(empty_group)
         # cmds.delete(empty_group)
@@ -144,7 +143,7 @@ class MayaMatrixTools (object):
                         0.0, 0.0, 0.0, 1.0]
         empty_matrix = api.MMatrix(_empty_matrix)
         return empty_matrix
-    
+
     def removeOffsetMatrix(self):
         warning = u"Select One object at least\n"
         if self.length_of_sel_list < 1 : sys.stderr.write(warning); raise (Exception(warning))
@@ -159,13 +158,13 @@ class MayaMatrixToolsGroupMode (MayaMatrixTools) :
     def transOffsetMethod(self):
         # override
         """mehtod make How to trans our referenced object to target object"""
-        
+
         self.removeOffsetMatrix()
         matrix_product = self.computeOffsetMatrix()
-        
+
         # use cmds.ls fix the bug of object input
         offset_group = cmds.ls(cmds.group(empty=True, world=True, name = "{}_OffsetGP_01".format(self.sel_list[1])))[0]
-        
+
         for i in range(1,self.length_of_sel_list):
             # if i < 1: continue
             cmds.parent(self.sel_list[i], offset_group)
@@ -176,11 +175,11 @@ class MayaMatrixToolsMatrixMode (MayaMatrixTools):
     def __init__(self):
         # MayaMatrixTools.__init__(self)
         super(MayaMatrixToolsMatrixMode,self).__init__()
-        
+
     def transOffsetMethod(self):
         # override
         """mehtod make How to trans our referenced object to target object"""
-        
+
         self.removeOffsetMatrix()
         matrix_product = self.computeOffsetMatrix()
         # use offsetParentMatrix
@@ -204,7 +203,7 @@ class CamToolBase (MayaMatrixTools):
     """
     def __init__(self,class_override):
         self.global_time_slider = mel.eval('$tempGlobalTimeSlider=$gPlayBackSlider')
-        
+
         # a factory
         self.methodClass = MayaMatrixToolsModeFactory(class_override).methodClass
 
@@ -218,7 +217,7 @@ class CamToolBase (MayaMatrixTools):
         self.methodClass.transOffsetMethod()
 
     def setSelectList(self,input_list):
-        self.methodClass.setSelectList(input_list) 
+        self.methodClass.setSelectList(input_list)
         self.__dict__.update(self.methodClass.__dict__)
 
     def buildLocatorByJointName (self,matched_name_rule=r"locator_root$"):
@@ -226,9 +225,9 @@ class CamToolBase (MayaMatrixTools):
             find all joint in sel_list
 
             [loop]
-            
+
             if some joint named "locator_root";
-            
+
             will create a locator naming "null_{the name of inputted one which in sel_list}_#index#"
         """
         match = matched_name_rule
@@ -245,18 +244,18 @@ class CamToolBase (MayaMatrixTools):
     def connectAttrByName(self,input_from,input_to,attr_name):
         """
             wrap cmds.connectAttr();
-            
+
             will connect the [attr_name] from [input_from] to [input_to]
         """
         cmds.connectAttr (  "{}.{}".format(input_from,attr_name),
                             "{}.{}".format(input_to,attr_name),
                             force=True)
 
-            
+
     def createBaseCameraTools (self, cam_shape):
         """
             build copy camera then move to the location of current camera
-            
+
             then you can use :
                 current camera:
                     self.cam_shape
@@ -285,20 +284,20 @@ class CamToolBase (MayaMatrixTools):
     def copyCameraAttrs (self,input_from,input_to):
         """virtual method"""
         raise (NotImplementedError(u"You need an implementation of {}".format(sys._getframe().f_code.co_name)))
- 
+
     # interface
     def rebuildCameraByCameraMainProcess (self, cam_shape, use_target_filmsize = True):
         """virtual method"""
         raise (NotImplementedError(u"You need an implementation of {}".format(sys._getframe().f_code.co_name)))
-    
+
     def rebuildCameraByCamera (self, use_target_filmsize=True):
         """Automate create and bake copy of ue camera by free camera"""
-        
+
         # filter cameras
         for current in self.sel_list :
             if current == self.sel_list[0] : continue # skip target
             cameras = cmds.listRelatives(current, allDescendents=1, type="camera")
-            # loop 
+            # loop
             if (cameras) :
                 for cam_shape in cameras :
                     ls_cam_shape = cmds.ls(cam_shape)[0] # safe method
@@ -312,7 +311,7 @@ class CamToolBase (MayaMatrixTools):
         return {"start":key_start_time,"end":key_end_time}
 
 class TransMatrixFreeCam (CamToolBase):
-    
+
     """Rebuild the camera infomation as a free camera"""
     def __init__(self,class_override):
         CamToolBase.__init__(self,class_override)
@@ -325,16 +324,16 @@ class TransMatrixFreeCam (CamToolBase):
                     "shutterAngle","focalLength","bestFitClippingPlanes",
                     "fStop","cameraScale","lensSqueezeRatio","cameraAperture",
                     "verticalFilmAperture","horizontalFilmAperture"]
-    
+
         self.copyCameraAttrsByList(input_from,input_to,attrs_list)
-        
+
         # free cam only
         for attr in ["centerOfInterest","horizontalFilmOffset","verticalFilmOffset"] :
             self.connectAttrByName(self.cam_shape, input_to,attr)
 
     # -- implement
     def rebuildCameraByCameraMainProcess (self, current_cam_shape, use_target_filmsize=True):
-        
+
         self.createBaseCameraTools(current_cam_shape)
 
         # connect attributes
@@ -344,15 +343,15 @@ class TransMatrixFreeCam (CamToolBase):
 
         # get interage time range from current camera
         key_time_dict = self.getObjectKeyframeTimeRange(self.cam_transfrom)
-        
+
         # fix timeline
         cmds.timeControl(self.global_time_slider, edit=True, snap=True)
         cmds.playbackOptions(min=key_time_dict["start"], max=key_time_dict["end"],
                                 ast=key_time_dict["start"], aet=key_time_dict["end"])
-        
+
         # make parent constrain
         rebuild_cam_constraint_name = cmds.parentConstraint(self.cam_transfrom, self.rebuild_cam_transfrom,maintainOffset=1)[0]
-        
+
         # bake copy camera
         cmds.bakeResults(self.rebuild_cam_transfrom,
                         time=(key_time_dict["start"],key_time_dict["end"]),
@@ -365,7 +364,7 @@ class TransMatrixAimCam (CamToolBase):
     """Rebuild the camera infomation as a aim camera"""
     def __init__(self,class_override):
         CamToolBase.__init__(self,class_override)
-    
+
     # implement
     def copyCameraAttrs (self,input_from,input_to):
         """ Sync between two cameras  """
@@ -376,10 +375,10 @@ class TransMatrixAimCam (CamToolBase):
                     "verticalFilmAperture","horizontalFilmAperture"]
 
         self.copyCameraAttrsByList(input_from,input_to,attrs_list)
-    
+
     # implement
     def rebuildCameraByCameraMainProcess (self, current_cam_shape, use_target_filmsize=True):
-        
+
         self.createBaseCameraTools(current_cam_shape)
         # add two locator
         mel.eval("cameraMakeNode 2 \"{}\";".format(self.rebuild_cam_transfrom)) # magic method , Aim+Up == 3
@@ -387,18 +386,18 @@ class TransMatrixAimCam (CamToolBase):
         # aim_locator = cmds.rename(cmds.ls(aim_locator)[0], u"{}FBXASC046Target".format(rebuild_cam_transfrom))
         aim_tool_locator = cmds.spaceLocator(name="AimTool_{}_01".format(self.rebuild_cam_transfrom), position=(0,0,0))[0]
         cmds.xform(aim_tool_locator, m=self.rebuild_cam_matrix) # move to camera
-        
+
         # use node subtract
         math_node = cmds.shadingNode("floatMath", asUtility=1)
         cmds.connectAttr(self.rebuild_cam_transfrom + ".translateZ",math_node + ".floatA",force=1)
         cmds.setAttr(math_node + ".operation",1) # 0=add,1=sub
         cmds.connectAttr(self.cam_shape + ".centerOfInterest",math_node + ".floatB",force=1)
         cmds.connectAttr(math_node + ".outFloat", aim_tool_locator + ".translateZ",force=1)
-        
+
 
         # get interage time range from current camera
         key_time_dict = self.getObjectKeyframeTimeRange(self.cam_transfrom)
-        
+
         # fix timeline
         cmds.timeControl(self.global_time_slider, edit=True, snap=True)
         cmds.playbackOptions(   min=key_time_dict["start"], max=key_time_dict["end"],
@@ -408,12 +407,12 @@ class TransMatrixAimCam (CamToolBase):
         rebuild_cam_constraint_name = cmds.parentConstraint(self.cam_transfrom, self.rebuild_cam_transfrom,maintainOffset=1)[0]
         aim_tool_locator_constraint_name = cmds.parentConstraint(self.cam_transfrom, aim_tool_locator,maintainOffset=1)[0]
         cam_aim_locator_constraint_name = cmds.pointConstraint(aim_tool_locator, aim_locator,maintainOffset=0)[0]
-        
+
         # connect attributes
         attr_source =   (cmds.listRelatives(self.sel_list[0], children=1, type="camera", path=1)[0]) \
                         if (use_target_filmsize) else self.cam_shape
         self.copyCameraAttrs(attr_source , self.rebuild_cam_shape)
-        
+
         # bake copy camera
         for job in (self.rebuild_cam_transfrom, aim_tool_locator,aim_locator) :
 
@@ -451,20 +450,20 @@ class MatrixToolModesManager ():
                  rebuild_cam_mode=EnumMatrixToolModes.CamMode.FreeCam,
                  input_list=["top","persp"]
                  ):
-        
+
         self.__rebuild_cam_mode =  rebuild_cam_mode
         self.__rebuild_locator = True
         self.__matrix_trans_mode = trans_mode
         self.__sel_list = []
         self.__use_target_filmsize = True
         self.rebuild_locator_joint_search_rule = r"locator_root$"
-        
+
         self.sel_list = input_list
 
     @property
     def matrix_trans_mode (self):
         return self.__matrix_trans_mode
-    
+
     @matrix_trans_mode.setter
     def matrix_trans_mode (self, value):
         if value in [cls.__name__ for cls in MayaMatrixTools.__subclasses__()] :
@@ -475,16 +474,16 @@ class MatrixToolModesManager ():
     @property
     def rebuild_cam_mode (self):
         return self.__rebuild_cam_mode
-    
+
     @rebuild_cam_mode.setter
     def rebuild_cam_mode(self, value):
         if value in [cls.__name__ for cls in CamToolBase.__subclasses__()] :
             self.__rebuild_cam_mode = value
-    
+
     @property
     def rebuild_locator(self):
         return self.__rebuild_locator
-    
+
     @rebuild_locator.setter
     def rebuild_locator (self,value):
         if value in (0,1,True,False) :
@@ -496,7 +495,7 @@ class MatrixToolModesManager ():
     def sel_list (self):
         if len(self.__sel_list) > 0 :
             return self.__sel_list
-    
+
     @sel_list.setter
     def sel_list (self, value):
         if isinstance(value, list) and len(value) > 2 :
@@ -506,15 +505,16 @@ class MatrixToolModesManager ():
 
     @property
     def use_target_filmsize (self):
+        """if use target filmsize"""
         return self.__use_target_filmsize
-    
+
     @use_target_filmsize.setter
     def use_target_filmsize (self, value):
         if value in (0,1,True,False):
             self.__use_target_filmsize = value
         else :
             sys.stdout.write("You can only input 0|1|True|False for film size setter,Using default\n")
-    
+
     @use_target_filmsize.deleter
     def use_target_filmsize (self):
         self.__use_target_filmsize = True
@@ -530,9 +530,13 @@ class MatrixToolModesManager ():
         del (matrix_tool)
 
 class QTUICameraTransTool ():
-    
+    """_summary_
+
+    Make UI Here
+    """
+
     def __init__ (self):
-        pass 
+        pass
 
     def loadUI (self):
         pass
@@ -540,11 +544,19 @@ class QTUICameraTransTool ():
     def showMe (self):
         pass
 
-def runScript (*args, **kw):
-    matrix_tool = MatrixToolModesManager(input_list=cmds.ls(sl=1))
+def tempJobs (*args, **kw):
+    matrix_tool = MatrixToolModesManager(
+                    input_list=cmds.ls(sl=1),
+                    rebuild_cam_mode=EnumMatrixToolModes.CamMode.AimCam)
     # using regex to search bone
     matrix_tool.rebuild_locator_joint_search_rule = r"locator_root$"
+    matrix_tool.use_target_filmsize = False
     matrix_tool.run()
+
+# easily run script
+
+def runScript (*args, **kw):
+    tempJobs(*args, **kw)
 
 def onMayaDroppedPythonFile (*args,**kw):
     """Maya Dropped"""
