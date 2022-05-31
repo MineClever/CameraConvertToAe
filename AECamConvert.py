@@ -136,7 +136,7 @@ class MayaMatrixTools (object):
         # empty_group = cmds.group( empty=True, world=True, name="EMPETY_ORIGIN_POINT_01" )
         # empty_matrix = self.getWorldMatrix(empty_group)
         # cmds.delete(empty_group)
-        """Creat a empty matrix"""
+        """Create a empty matrix"""
         _empty_matrix =[1.0, 0.0, 0.0, 0.0,
                         0.0, 1.0, 0.0, 0.0,
                         0.0, 0.0, 1.0, 0.0,
@@ -157,7 +157,7 @@ class MayaMatrixToolsGroupMode (MayaMatrixTools) :
 
     def transOffsetMethod(self):
         # override
-        """mehtod make How to trans our referenced object to target object"""
+        """method make How to trans our referenced object to target object"""
 
         self.removeOffsetMatrix()
         matrix_product = self.computeOffsetMatrix()
@@ -178,7 +178,7 @@ class MayaMatrixToolsMatrixMode (MayaMatrixTools):
 
     def transOffsetMethod(self):
         # override
-        """mehtod make How to trans our referenced object to target object"""
+        """method make How to trans our referenced object to target object"""
 
         self.removeOffsetMatrix()
         matrix_product = self.computeOffsetMatrix()
@@ -207,9 +207,9 @@ class CamToolBase (MayaMatrixTools):
         # a factory
         self.methodClass = MayaMatrixToolsModeFactory(class_override).methodClass
 
-        self.cam_transfrom = None
+        self.cam_transform = None
         self.cam_shape = None
-        self.rebuild_cam_transfrom = None
+        self.rebuild_cam_transform = None
         self.rebuild_cam_shape = None
         self.rebuild_cam_matrix = None
 
@@ -259,19 +259,19 @@ class CamToolBase (MayaMatrixTools):
             then you can use :
                 current camera:
                     self.cam_shape
-                    self.cam_transfrom
+                    self.cam_transform
                 rebuilt camera:
-                    self.rebuild_cam_transfrom
+                    self.rebuild_cam_transform
                     self.rebuild_cam_shape
                     self.rebuild_cam_matrix : same as the matrix of current
         """
         self.cam_shape = cam_shape
-        self.cam_transfrom = cmds.ls(cmds.listRelatives(cam_shape, parent=1,fullPath=1)[0])[0]
-        rebuild_cam = cmds.camera (n="Cam_{}_Baked_".format(self.cam_transfrom))
-        self.rebuild_cam_transfrom = rebuild_cam[0]
+        self.cam_transform = cmds.ls(cmds.listRelatives(cam_shape, parent=1,fullPath=1)[0])[0]
+        rebuild_cam = cmds.camera (n="Cam_{}_Baked_".format(self.cam_transform))
+        self.rebuild_cam_transform = rebuild_cam[0]
         self.rebuild_cam_shape = rebuild_cam[1]
-        self.rebuild_cam_matrix = self.getWorldMatrix(self.cam_transfrom)
-        cmds.xform(self.rebuild_cam_transfrom, m=self.rebuild_cam_matrix)
+        self.rebuild_cam_matrix = self.getWorldMatrix(self.cam_transform)
+        cmds.xform(self.rebuild_cam_transform, m=self.rebuild_cam_matrix)
 
 
     def copyCameraAttrsByList (self,input_from,input_to,attrs_list):
@@ -342,7 +342,7 @@ class TransMatrixFreeCam (CamToolBase):
         self.copyCameraAttrs(attr_source , self.rebuild_cam_shape)
 
         # get interage time range from current camera
-        key_time_dict = self.getObjectKeyframeTimeRange(self.cam_transfrom)
+        key_time_dict = self.getObjectKeyframeTimeRange(self.cam_transform)
 
         # fix timeline
         cmds.timeControl(self.global_time_slider, edit=True, snap=True)
@@ -350,10 +350,10 @@ class TransMatrixFreeCam (CamToolBase):
                                 ast=key_time_dict["start"], aet=key_time_dict["end"])
 
         # make parent constrain
-        rebuild_cam_constraint_name = cmds.parentConstraint(self.cam_transfrom, self.rebuild_cam_transfrom,maintainOffset=1)[0]
+        rebuild_cam_constraint_name = cmds.parentConstraint(self.cam_transform, self.rebuild_cam_transform,maintainOffset=1)[0]
 
         # bake copy camera
-        cmds.bakeResults(self.rebuild_cam_transfrom,
+        cmds.bakeResults(self.rebuild_cam_transform,
                         time=(key_time_dict["start"],key_time_dict["end"]),
                         removeBakedAttributeFromLayer=1,shape=1,sampleBy=1.0,
                         removeBakedAnimFromLayer=1,disableImplicitControl=1)
@@ -361,7 +361,7 @@ class TransMatrixFreeCam (CamToolBase):
         cmds.delete(rebuild_cam_constraint_name)
 
 class TransMatrixAimCam (CamToolBase):
-    """Rebuild the camera infomation as a aim camera"""
+    """Rebuild the camera information as a aim camera"""
     def __init__(self,class_override):
         CamToolBase.__init__(self,class_override)
 
@@ -381,22 +381,22 @@ class TransMatrixAimCam (CamToolBase):
 
         self.createBaseCameraTools(current_cam_shape)
         # add two locator
-        mel.eval("cameraMakeNode 2 \"{}\";".format(self.rebuild_cam_transfrom)) # magic method , Aim+Up == 3
-        aim_locator = cmds.ls(u"{}_aim".format(self.rebuild_cam_transfrom))[0]
+        mel.eval("cameraMakeNode 2 \"{}\";".format(self.rebuild_cam_transform)) # magic method , Aim+Up == 3
+        aim_locator = cmds.ls(u"{}_aim".format(self.rebuild_cam_transform))[0]
         # aim_locator = cmds.rename(cmds.ls(aim_locator)[0], u"{}FBXASC046Target".format(rebuild_cam_transfrom))
-        aim_tool_locator = cmds.spaceLocator(name="AimTool_{}_01".format(self.rebuild_cam_transfrom), position=(0,0,0))[0]
+        aim_tool_locator = cmds.spaceLocator(name="AimTool_{}_01".format(self.rebuild_cam_transform), position=(0,0,0))[0]
         cmds.xform(aim_tool_locator, m=self.rebuild_cam_matrix) # move to camera
 
         # use node subtract
         math_node = cmds.shadingNode("floatMath", asUtility=1)
-        cmds.connectAttr(self.rebuild_cam_transfrom + ".translateZ",math_node + ".floatA",force=1)
+        cmds.connectAttr(self.rebuild_cam_transform + ".translateZ",math_node + ".floatA",force=1)
         cmds.setAttr(math_node + ".operation",1) # 0=add,1=sub
         cmds.connectAttr(self.cam_shape + ".centerOfInterest",math_node + ".floatB",force=1)
         cmds.connectAttr(math_node + ".outFloat", aim_tool_locator + ".translateZ",force=1)
 
 
         # get interage time range from current camera
-        key_time_dict = self.getObjectKeyframeTimeRange(self.cam_transfrom)
+        key_time_dict = self.getObjectKeyframeTimeRange(self.cam_transform)
 
         # fix timeline
         cmds.timeControl(self.global_time_slider, edit=True, snap=True)
@@ -404,8 +404,8 @@ class TransMatrixAimCam (CamToolBase):
                                 ast=key_time_dict["start"], aet=key_time_dict["end"])
 
         # make parent constrain
-        rebuild_cam_constraint_name = cmds.parentConstraint(self.cam_transfrom, self.rebuild_cam_transfrom,maintainOffset=1)[0]
-        aim_tool_locator_constraint_name = cmds.parentConstraint(self.cam_transfrom, aim_tool_locator,maintainOffset=1)[0]
+        rebuild_cam_constraint_name = cmds.parentConstraint(self.cam_transform, self.rebuild_cam_transform,maintainOffset=1)[0]
+        aim_tool_locator_constraint_name = cmds.parentConstraint(self.cam_transform, aim_tool_locator,maintainOffset=1)[0]
         cam_aim_locator_constraint_name = cmds.pointConstraint(aim_tool_locator, aim_locator,maintainOffset=0)[0]
 
         # connect attributes
@@ -414,7 +414,7 @@ class TransMatrixAimCam (CamToolBase):
         self.copyCameraAttrs(attr_source , self.rebuild_cam_shape)
 
         # bake copy camera
-        for job in (self.rebuild_cam_transfrom, aim_tool_locator,aim_locator) :
+        for job in (self.rebuild_cam_transform, aim_tool_locator,aim_locator) :
 
             """use maya capsuled method"""
             cmds.bakeResults(   job, time=(key_time_dict["start"], key_time_dict["end"]),
